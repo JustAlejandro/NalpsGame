@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 [System.Serializable]
 
@@ -17,13 +18,23 @@ public class BattleData {
     //Type and name of the Move(for UI use)
     public int type;
     public string name;
+    public List<int> status;
 
-    public BattleData(bool h = false, bool c = false, int d = 0, int t = (int)Types.Typeless, string n = "NAMELESS MOVE") {
+    public BattleData(bool h = false, bool c = false, int d = 0, int t = (int)Types.Typeless, 
+        string n = "NAMELESS MOVE", List<int> stats = null) {
         hit = h;
         crit = c;
         damage = d;
         type = t;
         name = n;
+        //Make something if null
+        stats = stats ?? new List<int>();
+        if(stats.Count() <= 0) {
+            status = Enumerable.Repeat(0, Status.GetNames(typeof(Status)).Length).ToList();
+        }
+        else {
+            status = stats;
+        }
     }
 }
 
@@ -38,6 +49,7 @@ public class Ability
     protected float accuracy;
     protected float critChance;
     protected string name;
+    public List<int> status = null;
 
     public Ability() {
         maxUse = 5;
