@@ -92,9 +92,8 @@ public class Nalp
         return slapCity;
     }
 
-    public void recieveHit(BattleData take) {
-        take.hit = true;
-        if (take.hit == false) return;
+    public BattleData recieveHit(BattleData take) {
+        if (take.hit == false) return take;
         //checking for status effects
         for(int i = 0; i < take.status.Count; i++) {
             if(take.status[i] > 0) {
@@ -106,9 +105,11 @@ public class Nalp
         }
 
         //Deal damage
-        int damage = take.damage * (Convert.ToInt32(take.crit) + 1);
+        take.damage = take.damage * (Convert.ToInt32(take.crit) + 1);
+        int damage = take.damage;
         hp = hp - Math.Max(take.damage - resistance, 0);
         updateStatus();
+        return take;
     }
 
     protected void updateStatus() {

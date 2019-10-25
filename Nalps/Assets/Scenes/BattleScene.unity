@@ -1513,7 +1513,6 @@ MonoBehaviour:
   box1: {fileID: 800451860}
   box2: {fileID: 1564984941}
   box3: {fileID: 1050753061}
-  text: {fileID: 1050753061}
   hpPlayer: {fileID: 654005627}
   hpEnemy: {fileID: 946551222}
   playerName: {fileID: 2098105073}
