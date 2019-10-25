@@ -90,7 +90,7 @@ public class Tackle : Ability {
     public Tackle() {
         maxUse = 10;
         curUse = 10;
-        damage = 10;
+        damage = 1;
         type = (int)Types.Typeless;
         accuracy = 1.0f;
         critChance = 0.1f;
@@ -102,7 +102,7 @@ public class FireBall : Ability {
     public FireBall() {
         maxUse = 5;
         curUse = 5;
-        damage = 20;
+        damage = 3;
         type = (int)Types.Fire;
         accuracy = 0.8f;
         critChance = 0.05f;
@@ -113,5 +113,17 @@ public class FireBall : Ability {
         int d = damage + user.Strength;
         curUse--;
         return new BattleData(Hit(), Crit(), d, type, name);
+    }
+}
+
+public class DEATH : Ability {
+    public DEATH() {
+        maxUse = 1;
+        curUse = 1;
+        damage = 9999999;
+        type = (int)Types.Typeless;
+        accuracy = 1.0f;
+        critChance = 0.0f;
+        name = "I AM BECOME DEATH DESTROYER OF WORLDS";
     }
 }

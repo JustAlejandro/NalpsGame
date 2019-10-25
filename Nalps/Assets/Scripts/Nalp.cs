@@ -23,7 +23,7 @@ enum Status {
 
 [System.Serializable]
 //This is the class that will be the basis for all Nalps, player and enemy alike
-public class Nalp : MonoBehaviour
+public class Nalp
 {
     protected int hp;
     protected int maxHp;
@@ -35,10 +35,10 @@ public class Nalp : MonoBehaviour
     protected int resistance;
     protected List<bool> statusEffects;
     protected List<int> statusDuration;
-    private List<bool> statusResist;
+    protected List<bool> statusResist;
     protected string nalpname;
     protected List<Ability> moveList;
-    protected Nalp enemy;
+    private Nalp enemy;
 
     public int Hp { get => hp; set => hp = value; }
     public int Xp { get => xp; set => xp = value; }
@@ -53,6 +53,7 @@ public class Nalp : MonoBehaviour
     protected List<int> StatusDuration { get => statusDuration; set => statusDuration = value; }
     public int MaxHp { get => maxHp; set => maxHp = value; }
     public List<bool> StatusResist { get => statusResist; set => statusResist = value; }
+    public Nalp Enemy { get => enemy; set => enemy = value; }
 
     //Default Nalp Constructor
     public Nalp() {
@@ -60,7 +61,11 @@ public class Nalp : MonoBehaviour
         maxHp = 10;
         Xp = 0;
         Level = 1;
+        resistance = 0;
         MoveList = new List<Ability>();
+        statusEffects = new List<bool>();
+        statusDuration = new List<int>();
+        statusResist = new List<bool>();
         //Init array of status effects, which will all be false
         statusEffects = new List<bool>();
         for(int i = 0; i < Status.GetNames(typeof(Status)).Length; i++) {
@@ -71,22 +76,24 @@ public class Nalp : MonoBehaviour
 
         //Default Nalp only knows tackle
         MoveList.Add(new Tackle());
-        nalpname = "Default Nalp";
-        enemy = null;
+        nalpname = "Steve-O";
+        Enemy = null;
     }
 
     //Give the nalp a target for combat
     public void enterCombat(Nalp e) {
-        enemy = e;
+        Enemy = e;
     }
 
     //Takes in the move to use on enemy
-    public void useAbility(int index) {
+    public BattleData useAbility(int index) {
         BattleData slapCity = MoveList[index].use(this);
-        enemy.recieveHit(slapCity);
+        Enemy.recieveHit(slapCity);
+        return slapCity;
     }
 
     public void recieveHit(BattleData take) {
+        take.hit = true;
         if (take.hit == false) return;
         //checking for status effects
         for(int i = 0; i < take.status.Count; i++) {
@@ -100,7 +107,7 @@ public class Nalp : MonoBehaviour
 
         //Deal damage
         int damage = take.damage * (Convert.ToInt32(take.crit) + 1);
-        hp = hp - Math.Min(take.damage - resistance, 0);
+        hp = hp - Math.Max(take.damage - resistance, 0);
         updateStatus();
     }
 
@@ -144,5 +151,32 @@ public class Nalp : MonoBehaviour
                 statusEffects[(int)Status.Poison] = false;
             }
         }
+    }
+}
+
+public class Player : Nalp {
+    public Player() {
+        Hp = 10;
+        maxHp = 10;
+        Xp = 0;
+        Level = 1;
+        resistance = 0;
+        MoveList = new List<Ability>();
+        statusEffects = new List<bool>();
+        statusDuration = new List<int>();
+        statusResist = new List<bool>();
+        //Init array of status effects, which will all be false
+        statusEffects = new List<bool>();
+        for (int i = 0; i < Status.GetNames(typeof(Status)).Length; i++) {
+            statusEffects.Add(false);
+            statusDuration.Add(0);
+            statusResist.Add(false);
+        }
+
+        MoveList.Add(new Tackle());
+        MoveList.Add(new FireBall());
+        MoveList.Add(new DEATH());
+        nalpname = "Richard";
+        Enemy = null;
     }
 }
