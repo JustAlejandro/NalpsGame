@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
     public Text playerName;
     public Text enemyName;
     public Text bigBox;
+    public HealthBar pHP;
+    public HealthBar eHP;
     public BattleManager battleManager;
     private BattleData mostRecent;
     private int winner = -1;
@@ -200,7 +202,8 @@ public class UIManager : MonoBehaviour {
             battleManager.battleInfo.hpTot[0];
         hpEnemy.text = enemyHP + "/" +
                     battleManager.battleInfo.hpTot[1];
-
+        pHP.UpdateHP(playerHP, battleManager.battleInfo.hpTot[0]);
+        eHP.UpdateHP(enemyHP, battleManager.battleInfo.hpTot[1]);
     }
 
     private void setNames() {

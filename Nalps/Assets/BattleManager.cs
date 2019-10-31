@@ -11,7 +11,8 @@ public class BattleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = new Player();
+        //find the player object by reference
+        player = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().player;
         enemy = new Nalp();
 
         //Manually set enemies
@@ -27,6 +28,16 @@ public class BattleManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    //id == 0 (player) else enemy
+    public float hpPercent(int id) {
+        if(id == 0) {
+            return player.hpPercent();
+        }
+        else {
+            return enemy.hpPercent();
+        }
     }
 
     //UI will ask us to use a move.

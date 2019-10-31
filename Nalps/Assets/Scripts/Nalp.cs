@@ -112,6 +112,10 @@ public class Nalp
         return take;
     }
 
+    public float hpPercent() {
+        return ((float)Hp) / ((float)MaxHp);
+    }
+
     protected void updateStatus() {
         poison();
         paralyze();
