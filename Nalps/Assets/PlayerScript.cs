@@ -20,7 +20,7 @@ public class PlayerScript : MonoBehaviour
 
     //Stop from being deleted on new scene
     void Awake() {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("PlayerData");
 
         if (objs.Length > 1) {
             Destroy(this.gameObject);

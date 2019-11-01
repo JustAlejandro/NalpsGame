@@ -140,20 +140,20 @@ public class Nalp
         if (statusEffects[(int)Status.Paralyzed]){
             statusDuration[(int)Status.Paralyzed]--;
             if (!(statusDuration[(int)Status.Paralyzed] > 0)) {
-                statusEffects[(int)Status.Poison] = false;
+                statusEffects[(int)Status.Paralyzed] = false;
             }
         }
     }
 
     //Burning reduces hp by 1/5
     private void burning() {
-        if (statusEffects[(int)Status.Poison]) {
-            statusDuration[(int)Status.Poison]--;
-            if (statusDuration[(int)Status.Poison] > 0) {
+        if (statusEffects[(int)Status.Burning]) {
+            statusDuration[(int)Status.Burning]--;
+            if (statusDuration[(int)Status.Burning] > 0) {
                 hp = hp - (MaxHp / 5);
             }
             else {
-                statusEffects[(int)Status.Poison] = false;
+                statusEffects[(int)Status.Burning] = false;
             }
         }
     }
