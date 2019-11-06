@@ -1,0 +1,44 @@
+[ONMEET]
+This is the intro line 
+~
+This is a new line in the next dialougue box
+[END]
+
+[ONCONDITION 619]
+You did that one thing, wow
+~
+Why are you like this?
+[OPTIONS] 11 12 13
+	[D]
+	I am deeply flawed as a person.
+	[D]
+	I am NALP.
+	[D]
+	This is an example.
+		[D1_Response 11]
+		That's kinda fucked up don't ya think?
+		~
+		You Ok bud?
+		[OPTIONS] 21 22
+			[D]
+			No
+			[D]
+			Yes
+				[D1_Response 21]
+				Yikes, hate to hear it
+				[GO 30]
+				[D2_Response 22]
+				Then why'd you say something so fucked up?
+				[GO 30]
+		[D2_Response 12]
+		Wow, what a coincidence. I am also NALP.
+		[GO 30]
+		[D3_Response 13]
+		Examples suck.
+		[GO 30]
+[GOODBYE 30]
+Well, fucking see ya I guess?
+~
+Bye bye.
+[END]
+[ENDFILE]
