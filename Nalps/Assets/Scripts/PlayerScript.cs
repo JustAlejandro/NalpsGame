@@ -6,7 +6,7 @@ public class PlayerScript : MonoBehaviour
 {
     public Player player;
     public Nalp enemy;
-    public Vector3 position;
+    public Vector3 position = new Vector3(0.475f, -1.513f);
     // Start is called before the first frame update
     void Start()
     {

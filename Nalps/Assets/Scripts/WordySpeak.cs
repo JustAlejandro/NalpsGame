@@ -14,6 +14,7 @@ public class WordySpeak : MonoBehaviour
     public Text box2;
     public Text box3;
     private int curId;
+    private string name;
     private bool exit = false;
     private Dictionary<int, DNode> Nodes = new Dictionary<int, DNode>();
 
@@ -23,11 +24,12 @@ public class WordySpeak : MonoBehaviour
         text = text.Replace("\t", "");
         text = text.Replace("\r", "");
         string[] inputs = text.Split('\n');
-        for(int i = 0; i < inputs.Length && !inputs[i].Equals("[ENDFILE]");) {
+        name = inputs[0] + ": ";
+        for(int i = 1; i < inputs.Length && !inputs[i].Equals("[ENDFILE]");) {
             DNode dn = new DNode(inputs, ref i);
             Nodes.Add(dn.id, dn);
         }
-        curId = 0;
+        curId = 619;
     }
 
     // Update is called once per frame
@@ -42,7 +44,7 @@ public class WordySpeak : MonoBehaviour
 
     //Will return true until the dialog box is over
     public bool disp() {
-        box.text = Nodes[curId].getText();
+        box.text = name + Nodes[curId].getText();
         //Only show options if we're ready for them
         if(Nodes[curId].diaReady())setDiaOptions();
         curId = Nodes[curId].nextNode();
