@@ -38,6 +38,7 @@ public class Nalp
     protected List<bool> statusResist;
     protected string nalpname;
     protected List<Ability> moveList;
+    protected List<Item> items;
     private Nalp enemy;
 
     public int Hp { get => hp; set => hp = value; }
@@ -54,6 +55,7 @@ public class Nalp
     public int MaxHp { get => maxHp; set => maxHp = value; }
     public List<bool> StatusResist { get => statusResist; set => statusResist = value; }
     public Nalp Enemy { get => enemy; set => enemy = value; }
+    protected List<Item> Items { get => items; set => items = value; }
 
     //Default Nalp Constructor
     public Nalp() {
@@ -83,6 +85,23 @@ public class Nalp
     //Give the nalp a target for combat
     public void enterCombat(Nalp e) {
         Enemy = e;
+    }
+
+    public bool giveItem(string s, int count = 1) {
+        for(int i = 0; i < items.Count; i++) {
+            if (items[i].name.Equals(s)) {
+                items[i].count += count;
+                return true;
+            }
+        }
+        if(items.Count >= 4) {
+            return false;
+        }
+        else {
+            items.Add(new Item(GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().allItems[s]));
+            items[items.Count - 1].count += count;
+            return true;
+        }
     }
 
     //Takes in the move to use on enemy
