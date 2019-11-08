@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MCController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class MCController : MonoBehaviour
     void Start()
     {
         //animator = GetComponent<Animator>();
+        transform.position = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().position;
         position = transform.position;
     }
 
@@ -33,6 +35,9 @@ public class MCController : MonoBehaviour
             if (encounter > 0.8f)
             {
                 Debug.Log("Fight!");
+                GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().position = position;
+
+                SceneManager.LoadScene("BattleScene");
             }
         }
 
