@@ -187,6 +187,17 @@ public class UIManager : MonoBehaviour {
 
     private void endBattle() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //Player won
+        if(winner == 0) {
+            //Set the enemy in playerData for consumption?
+            GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().enemy = 
+                battleManager.getEnemy();
+            SceneManager.LoadScene("Consume");
+        }
+        //Enemy won
+        else {
+            SceneManager.LoadScene("END");
+        }
     }
 
     private void setHp() {

@@ -181,6 +181,7 @@ public class Player : Nalp {
         MoveList.Add(new Tackle());
         MoveList.Add(new FireBall());
         MoveList.Add(new DEATH());
+        MoveList.Add(new Wait());
         nalpname = "Richard";
         Enemy = null;
     }

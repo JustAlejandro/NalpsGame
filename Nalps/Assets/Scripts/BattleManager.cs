@@ -30,6 +30,10 @@ public class BattleManager : MonoBehaviour
         
     }
 
+    public Nalp getEnemy() {
+        return enemy;
+    }
+
     //id == 0 (player) else enemy
     public float hpPercent(int id) {
         if(id == 0) {

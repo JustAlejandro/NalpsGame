@@ -127,3 +127,15 @@ public class DEATH : Ability {
         name = "I AM BECOME DEATH DESTROYER OF WORLDS";
     }
 }
+
+public class Wait : Ability {
+    public Wait() {
+        maxUse = 10;
+        curUse = 10;
+        damage = 0;
+        type = (int)Types.Typeless;
+        accuracy = 1.0f;
+        critChance = 1.0f;
+        name = "Take a Nap";
+    }
+}

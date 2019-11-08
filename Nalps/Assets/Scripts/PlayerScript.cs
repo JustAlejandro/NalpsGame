@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     public Player player;
+    public Nalp enemy;
     public Vector3 position;
     // Start is called before the first frame update
     void Start()
     {
         player = new Player();
+        enemy = new Nalp();
     }
 
     // Update is called once per frame
