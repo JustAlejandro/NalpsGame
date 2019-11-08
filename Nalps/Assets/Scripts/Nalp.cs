@@ -64,10 +64,14 @@ public class Nalp
         Xp = 0;
         Level = 1;
         resistance = 0;
+        strength = 1;
+        speed = 1;
+
         MoveList = new List<Ability>();
         statusEffects = new List<bool>();
         statusDuration = new List<int>();
         statusResist = new List<bool>();
+        items = new List<Item>();
         //Init array of status effects, which will all be false
         statusEffects = new List<bool>();
         for(int i = 0; i < Status.GetNames(typeof(Status)).Length; i++) {
@@ -87,21 +91,31 @@ public class Nalp
         Enemy = e;
     }
 
-    public bool giveItem(string s, int count = 1) {
+    public ItemData useItem(int id) {
+        items[id].useItem();
+        ItemData iDat = items[id].ItemData;
+        if(items[id].count < 1) {
+            items.RemoveAt(id);
+        }
+        hp += iDat.heal;
+        speed += iDat.speed;
+        resistance += iDat.resistance;
+        strength += iDat.strength;
+        return iDat;
+    }
+
+    public bool giveItem(ItemData itemData, int count = 1) {
         for(int i = 0; i < items.Count; i++) {
-            if (items[i].name.Equals(s)) {
-                items[i].count += count;
+            if (itemData.Equals(items[i])) {
+                items[i].count++;
                 return true;
             }
         }
         if(items.Count >= 4) {
             return false;
         }
-        else {
-            items.Add(new Item(GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().allItems[s]));
-            items[items.Count - 1].count += count;
-            return true;
-        }
+        items.Add(new Item(itemData));
+        return false;
     }
 
     //Takes in the move to use on enemy
@@ -185,6 +199,8 @@ public class Player : Nalp {
         Xp = 0;
         Level = 1;
         resistance = 0;
+        strength = 1;
+        speed = 1;
         MoveList = new List<Ability>();
         statusEffects = new List<bool>();
         statusDuration = new List<int>();
@@ -196,6 +212,7 @@ public class Player : Nalp {
             statusDuration.Add(0);
             statusResist.Add(false);
         }
+        items = new List<Item>();
 
         MoveList.Add(new Tackle());
         MoveList.Add(new FireBall());

@@ -14,7 +14,7 @@ public class WordySpeak : MonoBehaviour
     public Text box2;
     public Text box3;
     private int curId;
-    private string name;
+    private new string name;
     private bool exit = false;
     private Dictionary<int, DNode> Nodes = new Dictionary<int, DNode>();
 
