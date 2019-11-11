@@ -1,0 +1,55 @@
+Testing center agent
+[ONMEET]
+Reason for entry?
+[OPTIONS] 11 12 13
+	[D]
+	I am here for the Nalp tournament.
+	[D]
+	I am here to become the very best there ever was!
+	[D]
+	Same as everyone else?
+		[D1_Response 11]
+		[GO 50]
+	
+		[D2_Response 12]
+		Cocky, aren't you. That'll change soon.
+		[GO 50]
+
+		[D3_Response 13]
+		Okay then smartass.
+		[GO 50]
+[PAYMENT 50]
+Alright then, please present your payment Nalp.
+~
+What, you didn't know?
+~
+Every entering contestant is required to give a Nalp to the city for public good.
+~
+Why? The city needs to maintain its labor force somehow, right?
+~
+Anyways, just give me one of your Nalps and you'll be in.
+[OPTIONS] 51 52 53
+	[D]
+	That will never happen! My Nalps are my friends!
+	[D]
+	You're delusional if you think I'm giving you my Nalps.
+	[D]
+	I DEMAND TO SPEAK WITH YOUR MANAGER!
+		[D1_Response 51]
+		I see you intend on making this difficult.
+		[GO 60]
+
+		[D2_Response 52]
+		I see you intend on making this difficult.
+		[GO 60]
+
+		[D3_Response 53]
+		I see you intend on making this difficult.
+		[GO 60]
+
+[RESOLUTION 60]
+How about we settle this the only way you thick headed trainers seem to know how?
+~
+with a duel.
+[END]
+[ENDFILE]

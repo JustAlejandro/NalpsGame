@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        click = Input.GetMouseButtonDown(0);
+        click = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space);
         if (Input.GetKeyDown(KeyCode.Escape)) {
             if(state == (int)UIState.PLAYERMOVEWAIT || state == (int)UIState.PLAYERITEMWAIT) {
                 state = (int)UIState.PICKACTION;

@@ -29,13 +29,13 @@ public class WordySpeak : MonoBehaviour
             DNode dn = new DNode(inputs, ref i);
             Nodes.Add(dn.id, dn);
         }
-        curId = 619;
+        curId = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !exit) {
+        if ((Input.GetMouseButtonDown(0)) && !exit) {
             if (!disp()) {
                 exit = true;
             }
@@ -61,6 +61,7 @@ public class WordySpeak : MonoBehaviour
         toAdd.Add("");
         toAdd.Add("");
         toAdd.Add("");
+        if (!Nodes[curId].diaReady()) return;
         for (int i = 0; i < Nodes[curId].options.Count; i++) {
             switch (i) {
                 case 0:

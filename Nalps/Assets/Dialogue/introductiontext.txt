@@ -1,0 +1,20 @@
+Introduction Text
+[ONMEET]
+Welcome to the World of Nalps!
+~
+DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK DICK
+This is David, a trainer from the village Splarmfle. He has big aspirations for his future in the city!
+~
+Every year, the capital city of Ja'Nerick hosts the Festival of Riches, the biggest Festival in all of Arcanthia.
+~
+It is at this festival that best trainers throughout the Ansol region gather and compete to become the one,
+~
+and only,
+~
+Champion Trainer!
+~
+It seems we're getting off the bus now.
+~
+You should probably head to the testing center from here.
+[END]
+[ENDFILE]
