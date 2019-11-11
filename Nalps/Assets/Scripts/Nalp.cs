@@ -123,7 +123,7 @@ public class Nalp
     }
 
     //Takes in the move to use on enemy
-    public BattleData useAbility(int index) {
+    public virtual BattleData useAbility(int index) {
         BattleData slapCity = MoveList[index].use(this);
         Enemy.recieveHit(slapCity);
         return slapCity;
@@ -224,5 +224,14 @@ public class Player : Nalp {
         MoveList.Add(new Wait());
         nalpname = "Richard";
         Enemy = null;
+    }
+
+    public override BattleData useAbility(int index) {
+        BattleData slapCity = MoveList[index].use(this);
+        Enemy.recieveHit(slapCity);
+        if(moveList[index].CurUse < 0) {
+            moveList.RemoveAt(index);
+        }
+        return slapCity;
     }
 }

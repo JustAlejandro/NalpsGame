@@ -16,7 +16,9 @@ enum UIState {
     PLAYERITEMWAIT = 7,
     PLAYERITEMUSE = 8,
     SHOWSTATS = 9,
-    TRYRUN = 10
+    TRYRUN = 10,
+    RUNSUCCEED = 11,
+    RUNFAIL = 12
 }
 
 public class UIManager : MonoBehaviour {
@@ -52,6 +54,11 @@ public class UIManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         click = Input.GetMouseButtonDown(0);
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if(state == (int)UIState.PLAYERMOVEWAIT || state == (int)UIState.PLAYERITEMWAIT) {
+                state = (int)UIState.PICKACTION;
+            }
+        }
         switch (state) {
             //Wait on Player
             case (int)UIState.PLAYERMOVEWAIT:
@@ -86,9 +93,32 @@ public class UIManager : MonoBehaviour {
             case (int)UIState.PLAYERITEMUSE:
                 playerItemUse();
                 break;
+            case (int)UIState.TRYRUN:
+                tryRun();
+                break;
+            case (int)UIState.RUNSUCCEED:
+                if (click) // load next scene
+                    SceneManager.LoadScene("TestScene");
+                break;
+            case (int)UIState.RUNFAIL:
+                if (click)
+                    state = (int)UIState.ENEMYGIVEHIT;
+                break;
             default:
                 Debug.Log("FSM Broke");
                 break;
+        }
+    }
+
+    private void tryRun() {
+        blankButtons();
+        if (battleManager.tryRun()) {
+            bigBox.text = "Ran away successfully!";
+            state = (int)UIState.RUNSUCCEED;
+        }
+        else {
+            bigBox.text = "Couldn't get away from enemy " + enemyName.text + "!";
+            state = (int)UIState.RUNFAIL;
         }
     }
 
@@ -149,6 +179,7 @@ public class UIManager : MonoBehaviour {
     }
 
     private void enemyTakeHit() {
+        blankButtons();
         //Change text on new state
         if (change) {
             change = false;
@@ -182,12 +213,14 @@ public class UIManager : MonoBehaviour {
     }
 
     private void enemyGiveHit() {
+        blankButtons();
         mostRecent = battleManager.takeMove();
         state = (int)UIState.PLAYERTAKEHIT;
         change = true;
     }
 
     private void playerTakeHit() {
+        blankButtons();
         //Change text on new state
         if (change) {
             change = false;
@@ -214,7 +247,7 @@ public class UIManager : MonoBehaviour {
         }
         if (click) {
             playerHP = battleManager.battleInfo.hpCur[0];
-            state = (int)UIState.PLAYERMOVEWAIT;
+            state = (int)UIState.PICKACTION;
         }
         setHp();
         checkWinner();
@@ -233,6 +266,7 @@ public class UIManager : MonoBehaviour {
 
     private bool winShow = false;
     private void showWinner() {
+        blankButtons();
         if (click && !winShow) {
             if (winner == 0) {
                 bigBox.text = playerName.text + " butchered " + enemyName.text + "!";
@@ -287,10 +321,7 @@ public class UIManager : MonoBehaviour {
     }
 
     void setAbilityText() {
-        box0.text = "";
-        box1.text = "";
-        box2.text = "";
-        box3.text = "";
+        blankButtons();
         if(state == (int)UIState.PICKACTION) {
             box0.text = "FIGHT";
             box1.text = "ITEMS";
@@ -298,19 +329,20 @@ public class UIManager : MonoBehaviour {
             box3.text = "RUN";
         }
         if (state == (int)UIState.PLAYERMOVEWAIT) {
+            List<Ability> abil = battleManager.abilityInfo.moves;
             for (int i = 0; i < battleManager.abilityInfo.moves.Count; i++) {
                 switch (i) {
                     case 0:
-                        box0.text = battleManager.abilityInfo.moves[0].Name;
+                        box0.text = abil[0].Name + "\n" + abil[0].CurUse + "/" + abil[0].MaxUse;
                         break;
                     case 1:
-                        box1.text = battleManager.abilityInfo.moves[1].Name;
+                        box1.text = abil[1].Name + "\n" + abil[1].CurUse + "/" + abil[1].MaxUse;
                         break;
                     case 2:
-                        box2.text = battleManager.abilityInfo.moves[2].Name;
+                        box2.text = abil[2].Name + "\n" + abil[2].CurUse + "/" + abil[2].MaxUse;
                         break;
                     case 3:
-                        box3.text = battleManager.abilityInfo.moves[3].Name;
+                        box3.text = abil[3].Name + "\n" + abil[3].CurUse + "/" + abil[3].MaxUse;
                         break;
                     default:
                         break;
@@ -372,7 +404,7 @@ public class UIManager : MonoBehaviour {
                     //state = (int)UIState.SHOWSTATS;
                     break;
                 case 3:
-                    //state = (int)UIState.TRYRUN;
+                    state = (int)UIState.TRYRUN;
                     break;
                 default:
                     break;
@@ -385,5 +417,12 @@ public class UIManager : MonoBehaviour {
             state = (int)UIState.PLAYERITEMUSE;
             change = true;
         }
+    }
+
+    private void blankButtons() {
+        box0.text = "";
+        box1.text = "";
+        box2.text = "";
+        box3.text = "";
     }
 }

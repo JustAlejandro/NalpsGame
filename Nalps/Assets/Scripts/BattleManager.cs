@@ -68,6 +68,20 @@ public class BattleManager : MonoBehaviour
         return toRet;
     }
 
+    public bool tryRun() {
+        if(player.Speed - (player.Speed / 2) > enemy.Speed) {
+            return true;
+        }
+        if(player.Speed + (player.Speed / 2) > enemy.Speed) {
+            return false;
+        }
+        float upBound = (float)player.Speed - (float)player.Speed / 2.0f;
+        float lowBound = (float)player.Speed + (float)player.Speed / 2.0f;
+
+        float prob = (upBound - (float)enemy.Speed) / (upBound - lowBound);
+        return Random.value < prob;
+    }
+
     public void updateUI() {
         battleInfo.update(player, enemy);
         abilityInfo.update(player);
