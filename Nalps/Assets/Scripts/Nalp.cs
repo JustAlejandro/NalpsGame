@@ -55,7 +55,7 @@ public class Nalp
     public int MaxHp { get => maxHp; set => maxHp = value; }
     public List<bool> StatusResist { get => statusResist; set => statusResist = value; }
     public Nalp Enemy { get => enemy; set => enemy = value; }
-    protected List<Item> Items { get => items; set => items = value; }
+    public List<Item> Items { get => items; set => items = value; }
 
     //Default Nalp Constructor
     public Nalp() {
@@ -97,11 +97,15 @@ public class Nalp
         if(items[id].count < 1) {
             items.RemoveAt(id);
         }
-        hp += iDat.heal;
+        hp = Math.Min(hp +iDat.heal, maxHp);
         speed += iDat.speed;
         resistance += iDat.resistance;
         strength += iDat.strength;
         return iDat;
+    }
+
+    public bool giveItem(string s, int count = 1) {
+        return giveItem(GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().GetItemData("Health Pot"), count);
     }
 
     public bool giveItem(ItemData itemData, int count = 1) {

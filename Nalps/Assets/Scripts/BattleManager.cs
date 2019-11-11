@@ -34,6 +34,14 @@ public class BattleManager : MonoBehaviour
         return enemy;
     }
 
+    public List<Item> GetItems() {
+        return player.Items;
+    }
+
+    public ItemData useItem(int id) {
+        return player.useItem(id);
+    }
+
     //id == 0 (player) else enemy
     public float hpPercent(int id) {
         if(id == 0) {

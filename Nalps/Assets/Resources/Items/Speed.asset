@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f513bb81f0f7e3c47a7af918e340a88f, type: 3}
   m_Name: Speed
   m_EditorClassIdentifier: 
-  Name: 
-  description: 
+  Name: SPEED
+  description: Gotta go Fast
   art: {fileID: 0}
   heal: 0
   resistance: 0
-  speed: 0
+  speed: 10
   strength: 0

@@ -3,6 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+
+enum UIState {
+    PLAYERMOVEWAIT = 0,
+    ENEMYTAKEHIT = 1,
+    ENEMYGIVEHIT = 2,
+    PLAYERTAKEHIT = 3,
+    SHOWWINNER = 4,
+    ENDBATTLE = 5,
+    PICKACTION = 6,
+    PLAYERITEMWAIT = 7,
+    PLAYERITEMUSE = 8,
+    SHOWSTATS = 9,
+    TRYRUN = 10
+}
 
 public class UIManager : MonoBehaviour {
 
@@ -19,9 +34,10 @@ public class UIManager : MonoBehaviour {
     public HealthBar eHP;
     public BattleManager battleManager;
     private BattleData mostRecent;
+    private ItemData recentItem;
     private int winner = -1;
     public ParticleSystem spray;
-    private int state = 0;
+    private int state = (int)UIState.PICKACTION;
     private bool change = true;
     private bool click = false;
     private int enemyHP;
@@ -38,33 +54,81 @@ public class UIManager : MonoBehaviour {
         click = Input.GetMouseButtonDown(0);
         switch (state) {
             //Wait on Player
-            case 0:
+            case (int)UIState.PLAYERMOVEWAIT:
                 playerMoveWait();
                 break;
             //Show enemy takes damage
-            case 1:
+            case (int)UIState.ENEMYTAKEHIT:
                 enemyTakeHit();
                 break;
             //Show enemy attack
-            case 2:
+            case (int)UIState.ENEMYGIVEHIT:
                 enemyGiveHit();
                 break;
             //Show player taking damage
-            case 3:
+            case (int)UIState.PLAYERTAKEHIT:
                 playerTakeHit();
                 break;
             //Show if someone won
-            case 4:
+            case (int)UIState.SHOWWINNER:
                 showWinner();
                 break;
             //End battle after showWinner ends
-            case 5:
+            case (int)UIState.ENDBATTLE:
                 endBattle();
+                break;
+            case (int)UIState.PICKACTION:
+                pickAction();
+                break;
+            case (int)UIState.PLAYERITEMWAIT:
+                playerItemWait();
+                break;
+            case (int)UIState.PLAYERITEMUSE:
+                playerItemUse();
                 break;
             default:
                 Debug.Log("FSM Broke");
                 break;
         }
+    }
+
+    private void playerItemUse() {
+        if (change) {
+            change = false;
+            string set = "You used " + recentItem.Name + " and gained ";
+            if (recentItem.heal > 0) set += recentItem.heal + "HP!";
+            if (recentItem.speed > 0) set += recentItem.speed + " Speed!";
+            if (recentItem.strength > 0) set += recentItem.strength + " Strength!";
+            if (recentItem.resistance > 0) set += recentItem.resistance + " Resistance!";
+            bigBox.text = set;
+        }
+        if (click) {
+            state = (int)UIState.ENEMYGIVEHIT;
+        }
+    }
+
+    private void playerItemWait() {
+        bigBox.text = "Select an Item:";
+        box0.text = "";
+        box1.text = "";
+        box2.text = "";
+        box3.text = "";
+        setAbilityText();
+    }
+
+    private void pickAction() {
+        bigBox.text = "What will you do?";
+        box0.text = "";
+        box1.text = "";
+        box2.text = "";
+        box3.text = "";
+
+        battleManager.updateUI();
+        playerHP = battleManager.battleInfo.hpCur[0];
+        enemyHP = battleManager.battleInfo.hpCur[1];
+        setAbilityText();
+        setNames();
+        setHp();
     }
 
     private void playerMoveWait() {
@@ -111,7 +175,7 @@ public class UIManager : MonoBehaviour {
         }
         if (click) {
             enemyHP = battleManager.battleInfo.hpCur[1];
-            state++;
+            state = (int)UIState.ENEMYGIVEHIT;
         }
         setHp();
         checkWinner();
@@ -119,7 +183,7 @@ public class UIManager : MonoBehaviour {
 
     private void enemyGiveHit() {
         mostRecent = battleManager.takeMove();
-        state++;
+        state = (int)UIState.PLAYERTAKEHIT;
         change = true;
     }
 
@@ -150,7 +214,7 @@ public class UIManager : MonoBehaviour {
         }
         if (click) {
             playerHP = battleManager.battleInfo.hpCur[0];
-            state = 0;
+            state = (int)UIState.PLAYERMOVEWAIT;
         }
         setHp();
         checkWinner();
@@ -159,11 +223,11 @@ public class UIManager : MonoBehaviour {
     private void checkWinner() {
         if(playerHP <= 0) {
             winner = 1;
-            state = 4;
+            state = (int)UIState.SHOWWINNER;
         }
         else if(enemyHP <= 0) {
             winner = 0;
-            state = 4;
+            state = (int)UIState.SHOWWINNER;
         }
     }
 
@@ -181,12 +245,12 @@ public class UIManager : MonoBehaviour {
         }
         
         if (click && winShow) {
-            state = 5;
+            state = (int)UIState.ENDBATTLE;
         }
     }
 
     private void endBattle() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         //Player won
         if(winner == 0) {
             //Set the enemy in playerData for consumption?
@@ -223,22 +287,55 @@ public class UIManager : MonoBehaviour {
     }
 
     void setAbilityText() {
-        for(int i = 0; i < battleManager.abilityInfo.moves.Count; i++) {
-            switch (i) {
-                case 0:
-                    box0.text = battleManager.abilityInfo.moves[0].Name;
-                    break;
-                case 1:
-                    box1.text = battleManager.abilityInfo.moves[1].Name;
-                    break;
-                case 2:
-                    box2.text = battleManager.abilityInfo.moves[2].Name;
-                    break;
-                case 3:
-                    box3.text = battleManager.abilityInfo.moves[3].Name;
-                    break;
-                default:
-                    break;
+        box0.text = "";
+        box1.text = "";
+        box2.text = "";
+        box3.text = "";
+        if(state == (int)UIState.PICKACTION) {
+            box0.text = "FIGHT";
+            box1.text = "ITEMS";
+            box2.text = "STATS";
+            box3.text = "RUN";
+        }
+        if (state == (int)UIState.PLAYERMOVEWAIT) {
+            for (int i = 0; i < battleManager.abilityInfo.moves.Count; i++) {
+                switch (i) {
+                    case 0:
+                        box0.text = battleManager.abilityInfo.moves[0].Name;
+                        break;
+                    case 1:
+                        box1.text = battleManager.abilityInfo.moves[1].Name;
+                        break;
+                    case 2:
+                        box2.text = battleManager.abilityInfo.moves[2].Name;
+                        break;
+                    case 3:
+                        box3.text = battleManager.abilityInfo.moves[3].Name;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        if (state == (int)UIState.PLAYERITEMWAIT) {
+            List<Item> items = battleManager.GetItems();
+            for (int i = 0; i < items.Count; i++) {
+                switch (i) {
+                    case 0:
+                        box0.text = items[0].ItemData.Name;
+                        break;
+                    case 1:
+                        box1.text = items[1].ItemData.Name;
+                        break;
+                    case 2:
+                        box2.text = items[2].ItemData.Name;
+                        break;
+                    case 3:
+                        box3.text = items[3].ItemData.Name;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -256,11 +353,36 @@ public class UIManager : MonoBehaviour {
         abilitySelect(3);
     }
     public void abilitySelect(int id) {
-        if(state == 0) {
+        if(state == (int)UIState.PLAYERMOVEWAIT) {
             if (id > battleManager.abilityInfo.moves.Count - 1) return;
             //Later using the returns here to show battle info
             mostRecent = battleManager.useMove(id);
             state++;
+            change = true;
+        }
+        if (state == (int)UIState.PICKACTION) {
+            switch (id) {
+                case 0:
+                    state = (int)UIState.PLAYERMOVEWAIT;
+                    break;
+                case 1:
+                    state = (int)UIState.PLAYERITEMWAIT;
+                    break;
+                case 2:
+                    //state = (int)UIState.SHOWSTATS;
+                    break;
+                case 3:
+                    //state = (int)UIState.TRYRUN;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (state == (int)UIState.PLAYERITEMWAIT) {
+            if (id > battleManager.GetItems().Count - 1) return;
+
+            recentItem = battleManager.useItem(id);
+            state = (int)UIState.PLAYERITEMUSE;
             change = true;
         }
     }

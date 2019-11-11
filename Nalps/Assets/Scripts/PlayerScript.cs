@@ -10,17 +10,25 @@ public class PlayerScript : MonoBehaviour {
     public Nalp enemy;
     public Vector3 position = new Vector3(0.475f, -1.513f);
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        itemDatas = new List<ItemData>(Resources.LoadAll<ItemData>("Items"));
         player = new Player();
         enemy = new Nalp();
-        itemDatas = new List<ItemData>(Resources.LoadAll<ItemData>("Items"));
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public ItemData GetItemData(string n) {
+        foreach(ItemData id in itemDatas) {
+            if (id.Name.Equals(n)) {
+                return id;
+            }
+        }
+        return null;
     }
 
     //Stop from being deleted on new scene
