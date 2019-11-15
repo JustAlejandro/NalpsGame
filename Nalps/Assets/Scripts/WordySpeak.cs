@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class WordySpeak : MonoBehaviour
 {
     public TextAsset textFile;     // drop your file here in inspector
+    public GameObject ui;
     public Text box;
     public Text box0;
     public Text box1;
@@ -16,6 +17,7 @@ public class WordySpeak : MonoBehaviour
     private int curId;
     private new string name;
     private bool exit = false;
+    public bool active = false;
     private Dictionary<int, DNode> Nodes = new Dictionary<int, DNode>();
 
 
@@ -34,13 +36,22 @@ public class WordySpeak : MonoBehaviour
         }
         curId = 0;
     }
+    
+    public void setActive(bool s) {
+        active = s;
+        ui.SetActive(true);
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (!active) return;
+
         if ((Input.GetMouseButtonDown(0)) && !exit) {
             if (!disp()) {
                 exit = true;
+                ui.SetActive(false);
+                active = false;
             }
         }
     }
