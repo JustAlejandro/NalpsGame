@@ -60,6 +60,15 @@ public class Ability
         critChance = 0.0f;
         name = "DEFAULT MOVE";
     }
+    public Ability(AbilityData ad) {
+        maxUse = ad.maxUse;
+        curUse = ad.maxUse;
+        damage = ad.damage;
+        type = ad.type;
+        accuracy = ad.accuracy;
+        critChance = ad.critChance;
+        name = ad.title;
+    }
 
     //Return the BattleData to be read by the enemy
     //Input: Nalp to modify the move if the user's stats influence its power

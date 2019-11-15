@@ -40,6 +40,7 @@ public class Nalp
     protected List<Ability> moveList;
     protected List<Item> items;
     private Nalp enemy;
+    protected PlayerScript ps;
 
     public int Hp { get => hp; set => hp = value; }
     public int Xp { get => xp; set => xp = value; }
@@ -59,6 +60,8 @@ public class Nalp
 
     //Default Nalp Constructor
     public Nalp() {
+        ps = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>();
+
         Hp = 10;
         maxHp = 10;
         Xp = 0;
@@ -81,7 +84,7 @@ public class Nalp
         }
 
         //Default Nalp only knows tackle
-        MoveList.Add(new Tackle());
+        MoveList.Add(new Ability(ps.randomAbilityData()));
         nalpname = "Steve-O";
         Enemy = null;
     }
@@ -111,7 +114,7 @@ public class Nalp
     public bool giveItem(ItemData itemData, int count = 1) {
         for(int i = 0; i < items.Count; i++) {
             if (itemData.Equals(items[i])) {
-                items[i].count++;
+                items[i].count+= count;
                 return true;
             }
         }
@@ -119,6 +122,7 @@ public class Nalp
             return false;
         }
         items.Add(new Item(itemData));
+        items[items.Count - 1].count += count;
         return false;
     }
 
@@ -198,6 +202,8 @@ public class Nalp
 
 public class Player : Nalp {
     public Player() {
+        ps = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>();
+
         Hp = 10;
         maxHp = 10;
         Xp = 0;
@@ -218,10 +224,12 @@ public class Player : Nalp {
         }
         items = new List<Item>();
 
-        MoveList.Add(new Tackle());
-        MoveList.Add(new FireBall());
-        MoveList.Add(new DEATH());
-        MoveList.Add(new Wait());
+        MoveList.Add(new Ability(ps.GetAbilityData("Tackle")));
+        MoveList.Add(new Ability(ps.GetAbilityData("Slap")));
+        MoveList.Add(new Ability(ps.GetAbilityData("Crush")));
+
+        MoveList.Add(new Ability(ps.GetAbilityData("Fire Ball")));
+
         nalpname = "Richard";
         Enemy = null;
     }
@@ -229,7 +237,7 @@ public class Player : Nalp {
     public override BattleData useAbility(int index) {
         BattleData slapCity = MoveList[index].use(this);
         Enemy.recieveHit(slapCity);
-        if(moveList[index].CurUse < 0) {
+        if(moveList[index].CurUse <= 0) {
             moveList.RemoveAt(index);
         }
         return slapCity;
