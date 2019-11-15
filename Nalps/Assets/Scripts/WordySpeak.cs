@@ -24,7 +24,10 @@ public class WordySpeak : MonoBehaviour
         text = text.Replace("\t", "");
         text = text.Replace("\r", "");
         string[] inputs = text.Split('\n');
-        name = inputs[0] + ": ";
+        name = "";
+        if(inputs[0].Length >= 1) {
+            name = inputs[0] + ": ";
+        }
         for(int i = 1; i < inputs.Length && !inputs[i].Equals("[ENDFILE]");) {
             DNode dn = new DNode(inputs, ref i);
             Nodes.Add(dn.id, dn);
@@ -183,8 +186,8 @@ public class DNode {
 
     //make the jump if there's nothing to do.
     public int nextNode() {
-        if(cur >= show.Count) {
-            if(dest.Count == 0) {
+        if(cur > show.Count) {
+            if(dest.Count == 0 || dest[0] == -1) {
                 return -1;
             }
             if (jump) {

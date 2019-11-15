@@ -6,14 +6,17 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
     public List<ItemData> itemDatas;
+    public List<AbilityData> abilityDatas;
     public Player player;
     public Nalp enemy;
     public Vector3 position = new Vector3(0.475f, -1.513f);
     // Start is called before the first frame update
     void Start() {
         itemDatas = new List<ItemData>(Resources.LoadAll<ItemData>("Items"));
+        abilityDatas = new List<AbilityData>(Resources.LoadAll<AbilityData>("Abilities"));
         player = new Player();
         enemy = new Nalp();
+        player.giveItem("Health Pot", 3);
     }
 
     // Update is called once per frame
@@ -27,6 +30,18 @@ public class PlayerScript : MonoBehaviour {
             if (id.Name.Equals(n)) {
                 return id;
             }
+        }
+        return null;
+    }
+
+    public AbilityData randomAbilityData() {
+        return abilityDatas[Mathf.RoundToInt(UnityEngine.Random.Range(0, abilityDatas.Count - 1))];
+    }
+
+    public AbilityData GetAbilityData(string n) {
+        foreach(AbilityData ad in abilityDatas) {
+            if (ad.title.Equals(n))
+                return ad;
         }
         return null;
     }
