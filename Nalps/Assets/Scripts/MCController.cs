@@ -17,7 +17,12 @@ public class MCController : MonoBehaviour
     void Start()
     {
         //animator = GetComponent<Animator>();
-        transform.position = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().position;
+        Vector3 newpos = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().position;
+        Debug.Log(newpos);
+        if(newpos.x != 0.0f && newpos.y != 0.0f && newpos.z != 0.0f) {
+            Debug.Log("SET POSITION TO SAVED");
+            transform.position = newpos;
+        }
         position = transform.position;
     }
 
@@ -26,8 +31,10 @@ public class MCController : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        lookDirection.Set(horizontal, vertical);
-        lookDirection.Normalize();
+        if(!(Mathf.Abs(horizontal) <= 0.04f && Mathf.Abs(vertical) <= 0.04f)) {
+            lookDirection.Set(horizontal, vertical);
+            lookDirection.Normalize();
+        }
 
         // This if statement trigger random encounters when the player is inside grass
         if (transform.position == position & inGrass & checkEncounter)
@@ -71,10 +78,13 @@ public class MCController : MonoBehaviour
         // The following is used to pick up items
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            RaycastHit2D findItem = Physics2D.Raycast(transform.position, lookDirection, 1.0f);
-            if (findItem.collider.GetComponent<Item>() != null)
+            RaycastHit2D findItem = Physics2D.Raycast(transform.position, lookDirection, 1.0f, LayerMask.GetMask("Static Objects"));
+            if (findItem.collider != null && findItem.collider.gameObject.GetComponent<ItemPickup>() != null)
             {
-                Debug.Log("Found Item");
+                ItemPickup ip = findItem.collider.gameObject.GetComponent<ItemPickup>();
+                Debug.Log("Found Item" + ip.type.Name + " Count: " + ip.count);
+                GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().player.giveItem(ip.type, ip.count);
+                Destroy(ip.gameObject);
             }
         }
     }

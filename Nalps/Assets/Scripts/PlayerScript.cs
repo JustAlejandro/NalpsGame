@@ -9,14 +9,13 @@ public class PlayerScript : MonoBehaviour {
     public List<AbilityData> abilityDatas;
     public Player player;
     public Nalp enemy;
-    public Vector3 position = new Vector3(0.475f, -1.513f);
+    public Vector3 position;
     // Start is called before the first frame update
     void Start() {
         itemDatas = new List<ItemData>(Resources.LoadAll<ItemData>("Items"));
         abilityDatas = new List<AbilityData>(Resources.LoadAll<AbilityData>("Abilities"));
         player = new Player();
         enemy = new Nalp();
-        player.giveItem("Health Pot", 3);
     }
 
     // Update is called once per frame
@@ -56,5 +55,12 @@ public class PlayerScript : MonoBehaviour {
 
         DontDestroyOnLoad(this.gameObject);
     }
+
+    #region singleton
+
+    private static PlayerScript _instance;
+    public static PlayerScript Instance => _instance ? _instance : (_instance = FindObjectOfType<PlayerScript>());
+   
+    #endregion
 
 }

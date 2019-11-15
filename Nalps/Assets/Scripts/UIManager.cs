@@ -139,19 +139,13 @@ public class UIManager : MonoBehaviour {
 
     private void playerItemWait() {
         bigBox.text = "Select an Item:";
-        box0.text = "";
-        box1.text = "";
-        box2.text = "";
-        box3.text = "";
+        blankButtons();
         setAbilityText();
     }
 
     private void pickAction() {
         bigBox.text = "What will you do?";
-        box0.text = "";
-        box1.text = "";
-        box2.text = "";
-        box3.text = "";
+        blankButtons();
 
         battleManager.updateUI();
         playerHP = battleManager.battleInfo.hpCur[0];
@@ -163,10 +157,7 @@ public class UIManager : MonoBehaviour {
 
     private void playerMoveWait() {
         bigBox.text = "Choose Your Move:";
-        box0.text = "";
-        box1.text = "";
-        box2.text = "";
-        box3.text = "";
+        blankButtons();
         battleManager.updateUI();
         playerHP = battleManager.battleInfo.hpCur[0];
         enemyHP = battleManager.battleInfo.hpCur[1];
