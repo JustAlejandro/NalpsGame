@@ -26,4 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 3fd05aad14cee6346a5d3058d61d6260
+  - enabled: 1
+    path: Assets/Scenes/StoryDump.unity
+    guid: 800282f4fb1c3444d87f864beee6016e
+  - enabled: 1
+    path: Assets/Scenes/CenterGuy.unity
+    guid: 5399f826594694e428028a4fbb75e0ec
   m_configObjects: {}

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class IntroChange : MonoBehaviour
 {
+    public string SceneName;
     public WordySpeak ws;
     void Start()
     {
@@ -15,7 +16,7 @@ public class IntroChange : MonoBehaviour
     void Update()
     {
         if (ws.exitDia()) {
-            SceneManager.LoadScene("TestScene");
+            SceneManager.LoadScene(SceneName);
         }
     }
 }
