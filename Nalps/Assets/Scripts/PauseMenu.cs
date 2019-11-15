@@ -40,7 +40,7 @@ public class PauseMenu : MonoBehaviour
         PlayerScript playerData = GameObject.Find("PlayerNalp").GetComponent<PlayerScript>();
         Player player = playerData.player;
         StatsDisplay display = statsMenu.GetComponent<StatsDisplay>();
-        display.setLabels(player.Hp, player.Strength, player.Resistance, player.Speed);
+        display.setLabels(player.Hp, player.Strength, player.Resistance, player.Speed, player.Level);
 
     }
 
