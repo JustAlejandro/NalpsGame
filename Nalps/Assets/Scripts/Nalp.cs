@@ -60,7 +60,7 @@ public class Nalp
 
     //Default Nalp Constructor
     public Nalp() {
-        ps = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>();
+        ps = PlayerScript.Instance;
 
         Hp = 10;
         maxHp = 10;
@@ -108,7 +108,7 @@ public class Nalp
     }
 
     public bool giveItem(string s, int count = 1) {
-        return giveItem(GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().GetItemData("Health Pot"), count);
+        return giveItem(ps.GetItemData("Health Pot"), count);
     }
 
     public bool giveItem(ItemData itemData, int count = 1) {
@@ -202,7 +202,7 @@ public class Nalp
 
 public class Player : Nalp {
     public Player() {
-        ps = GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>();
+        ps = PlayerScript.Instance;
 
         Hp = 10;
         maxHp = 10;

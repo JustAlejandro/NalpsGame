@@ -56,11 +56,9 @@ public class PlayerScript : MonoBehaviour {
         DontDestroyOnLoad(this.gameObject);
     }
 
-    #region singleton
 
     private static PlayerScript _instance;
     public static PlayerScript Instance => _instance ? _instance : (_instance = FindObjectOfType<PlayerScript>());
    
-    #endregion
 
 }

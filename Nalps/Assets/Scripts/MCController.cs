@@ -9,6 +9,7 @@ public class MCController : MonoBehaviour
     Vector3 position;
     public bool inGrass = false;
     private bool checkEncounter = true;
+    private WordySpeak ws = null;
     //Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
 
@@ -29,6 +30,12 @@ public class MCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ws != null && ws.active) return;
+        if (ws != null && !ws.active) {
+            ws = null;
+            return;
+        }
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         if(!(Mathf.Abs(horizontal) <= 0.04f && Mathf.Abs(vertical) <= 0.04f)) {
@@ -79,12 +86,18 @@ public class MCController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             RaycastHit2D findItem = Physics2D.Raycast(transform.position, lookDirection, 1.0f, LayerMask.GetMask("Static Objects"));
-            if (findItem.collider != null && findItem.collider.gameObject.GetComponent<ItemPickup>() != null)
+            if (findItem.collider != null)
             {
-                ItemPickup ip = findItem.collider.gameObject.GetComponent<ItemPickup>();
-                Debug.Log("Found Item" + ip.type.Name + " Count: " + ip.count);
-                GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().player.giveItem(ip.type, ip.count);
-                Destroy(ip.gameObject);
+                if(findItem.collider.gameObject.GetComponent<ItemPickup>() != null) {
+                    ItemPickup ip = findItem.collider.gameObject.GetComponent<ItemPickup>();
+                    Debug.Log("Found Item" + ip.type.Name + " Count: " + ip.count);
+                    GameObject.FindGameObjectsWithTag("PlayerData")[0].GetComponent<PlayerScript>().player.giveItem(ip.type, ip.count);
+                    Destroy(ip.gameObject);
+                }
+                if (findItem.collider.gameObject.GetComponent<WordySpeak>() != null) {
+                    ws = findItem.collider.GetComponent<WordySpeak>();
+                    ws.setActive(true);
+                }
             }
         }
     }
