@@ -46,6 +46,7 @@ public class MCController : MonoBehaviour
         // This if statement trigger random encounters when the player is inside grass
         if (transform.position == position & inGrass & checkEncounter)
         {
+            Debug.Log("Inside grass");
             checkEncounter = false;
             float encounter = Random.value;
             print(encounter);

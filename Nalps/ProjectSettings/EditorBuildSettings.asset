@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Consume.unity
     guid: e715c7e352f32ca4893659daa3f913e5
   - enabled: 1
-    path: Assets/Scenes/TestScene.unity
+    path: Assets/Scenes/Level1.unity
     guid: f6df6fedb619f214ab88fe04a16bd978
   - enabled: 1
     path: Assets/Scenes/DiaTest.unity
@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CenterGuy.unity
     guid: 5399f826594694e428028a4fbb75e0ec
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: ab90067bf1c18ac48a1969a7a228a255
   m_configObjects: {}
